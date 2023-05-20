@@ -1,0 +1,53 @@
+-- CHIP-8 DESCRIPTION --
+
+1. 8-bit registers -> 16:
+    => labeled v0 to vf.
+    => each register is able to hold any value from 0x00 to 0xff.
+    => register vf is special, used as a flag to hold info about operations.
+
+2. 4k bytes of memory
+    [u8; 4096]
+    => holding program instructions, long-term and short-term data.
+    => 0x000 to 0xfff
+
+    The address space is segmented into 3 sections:
+    i. 0x000 to 0x1ff -> originally reserved for the chip8 interpreter, we simply will not use it, except for:
+    ii. 0x050 to 0x0a0 -> used for storing the 16 chars (0 to f)
+    iii. 0x200 to 0xfff -> instructions
+
+3. 16-bit index register to store the memory address: u16
+
+4. 16-bit program counter: 
+    u16
+    => to store the address of the next instruction to execute.
+    => we generally read two bytes at once, because an instruction is generally two bytes.
+    => thus after reading an instruction, the pc is generally incremented by 2.
+
+5. 16 level stack:
+    [u16; 16]
+    => this is to keep the PCs of the times a call isntruction is executed
+
+6. 8-bit stack pointer: u8
+    => keeps track of where we are in the stack[modeled using an array].
+
+7. 8-bit delay timer: u8
+
+8. 8-bit sound timer: u8
+
+9. 16 input keys:
+    Keypad       Keyboard
+    +-+-+-+-+    +-+-+-+-+
+    |1|2|3|C|    |1|2|3|4|
+    +-+-+-+-+    +-+-+-+-+
+    |4|5|6|D|    |Q|W|E|R|
+    +-+-+-+-+ => +-+-+-+-+
+    |7|8|9|E|    |A|S|D|F|
+    +-+-+-+-+    +-+-+-+-+
+    |A|0|B|F|    |Z|X|C|V|
+    +-+-+-+-+    +-+-+-+-+
+
+10. 64x32 Monochrome Display Memory:
+    => additional memory buffer for storing the graphics to display.
+    => 64 pixels wide and 32 pixels high
+    => each pixel is either on or off
+    
