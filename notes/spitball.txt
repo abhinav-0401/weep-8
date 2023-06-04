@@ -1,6 +1,0 @@
-How am I going to go about this?
-
-1. My first thought is to encapsulate the machine in a struct:
-    => the simplest and most obvious way
-
-2. According to the reference I am following, I should load the ROM next.

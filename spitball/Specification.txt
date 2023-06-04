@@ -1,12 +1,17 @@
--- CHIP-8 DESCRIPTION --
+-- WEEP-8 DESCRIPTION --
+
+NOTE: WEEP-8 is a (not so good) clone of CHIP-8, so the specification of WEEP-8 doubles as a specification for CHIP-8
 
 1. 8-bit registers -> 16:
+    var registers [16]int8
+
     => labeled v0 to vf.
     => each register is able to hold any value from 0x00 to 0xff.
     => register vf is special, used as a flag to hold info about operations.
 
 2. 4k bytes of memory
-    [u8; 4096]
+    var mem [4096]int8
+
     => holding program instructions, long-term and short-term data.
     => 0x000 to 0xfff
 
@@ -15,19 +20,22 @@
     ii. 0x050 to 0x0a0 -> used for storing the 16 chars (0 to f)
     iii. 0x200 to 0xfff -> instructions
 
-3. 16-bit index register to store the memory address: u16
+3. 16-bit index register to store the memory addresses for use in operations:
+    var index uint16
+    => it's 16 bits because the maximum memory address(0xfff) won't fit in an 8-bit register
 
 4. 16-bit program counter: 
-    u16
+    var pc uint16
     => to store the address of the next instruction to execute.
     => we generally read two bytes at once, because an instruction is generally two bytes.
     => thus after reading an instruction, the pc is generally incremented by 2.
 
 5. 16 level stack:
-    [u16; 16]
-    => this is to keep the PCs of the times a call isntruction is executed
+    var stack [16]uint16
+    => this is to keep the PCs of the times a call instruction is executed
 
-6. 8-bit stack pointer: u8
+6. 8-bit stack pointer:
+    var stackPtr int8
     => keeps track of where we are in the stack[modeled using an array].
 
 7. 8-bit delay timer: u8
@@ -49,5 +57,6 @@
 10. 64x32 Monochrome Display Memory:
     => additional memory buffer for storing the graphics to display.
     => 64 pixels wide and 32 pixels high
-    => each pixel is either on or off
-    
+    => each pixel is either on or off: this can be encapsulated by a bit??
+
+11. Weep-8 also has an 8-bit random number generator
